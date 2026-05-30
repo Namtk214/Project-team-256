@@ -1,0 +1,399 @@
+╔════════════════════════════════════════════════════════════════╗
+║              GARAGE VEHICLE MANAGEMENT SYSTEM - UML            ║
+║                    (My Implementation)                         ║
+╚════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         <<abstract>>                            │
+│                           Vehicle                               │
+├─────────────────────────────────────────────────────────────────┤
+│ # brand : string                                                │
+│ # model : string                                                │
+│ # price : double                                                │
+├─────────────────────────────────────────────────────────────────┤
+│ + Vehicle()                                                     │
+│ + Vehicle(brand : string, model : string, price : double)       │
+│ + virtual ~Vehicle()                                            │
+│                                                                 │
+│ + getBrand() : string                                           │
+│ + getModel() : string                                           │
+│ + getPrice() : double                                           │
+│ + setBrand(brand : string) : void                               │
+│ + setModel(model : string) : void                               │
+│ + setPrice(price : double) : void                               │
+│                                                                 │
+│ + (abstract) displayInfo() : void                               │
+│ + (abstract) fuelConsumption() : void                           │
+│ + (abstract) getPollution() : double                            │
+│                                                                 │
+│ + operator<(other : Vehicle) : bool                             │
+│ + operator>(other : Vehicle) : bool                             │
+│ + operator==(other : Vehicle) : bool                            │
+└─────────────────────────────────────────────────────────────────┘
+                              △
+                              │
+                    ┌─────────┼─────────┐
+                    │         │         │
+              Extends     Extends    Extends
+                    │         │         │
+        ┌───────────┘         │         └───────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+
+┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
+│         Car          │  │     Motorcycle       │  │        Truck         │
+├──────────────────────┤  ├──────────────────────┤  ├──────────────────────┤
+│ - color : string     │  │ - engineType:string  │  │ - maxLoadCapacity    │
+│ - numSeats : int     │  │ - maxSpeed : double  │  │   : double           │
+│                      │  │                      │  │ - lengthBase:double  │
+│ + {static}           │  │ + {static}           │  │ + {static}           │
+│   pollution : double │  │   pollution : double │  │   pollution : double │
+├──────────────────────┤  ├──────────────────────┤  ├──────────────────────┤
+│ + Car()              │  │ + Motorcycle()       │  │ + Truck()            │
+│ + Car(brand, model,  │  │ + Motorcycle(brand,  │  │ + Truck(brand,model, │
+│   price, color,      │  │   model, price,      │  │   price,maxLoad,     │
+│   numSeats)          │  │   engineType,        │  │   lengthBase)        │
+│ + ~Car()             │  │   maxSpeed)          │  │ + ~Truck()           │
+│                      │  │ + ~Motorcycle()      │  │                      │
+│ + getColor():string  │  │ + getEngineType()    │  │ + getMaxLoad-        │
+│ + getNumSeats():int  │  │   : string           │  │   Capacity():double  │
+│ + setColor():void    │  │ + getMaxSpeed()      │  │ + getLengthBase()    │
+│ + setNumSeats():void │  │   : double           │  │   : double           │
+│                      │  │ + setEngineType()    │  │ + setMaxLoad-        │
+│ + displayInfo():void │  │   : void             │  │   Capacity():void    │
+│ + fuelConsumption()  │  │ + setMaxSpeed()      │  │ + setLengthBase()    │
+│   : void             │  │   : void             │  │   : void             │
+│ + getPollution()     │  │                      │  │                      │
+│   : double           │  │ + displayInfo():void │  │ + displayInfo():void │
+└──────────────────────┘  │ + fuelConsumption()  │  │ + fuelConsumption()  │
+                          │   : void             │  │   : void             │
+                          │ + getPollution()     │  │ + getPollution()     │
+                          │   : double           │  │   : double           │
+                          └──────────────────────┘  └──────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                        VehicleNode                               │
+│                    (Linked List Node)                            │
+├──────────────────────────────────────────────────────────────────┤
+│ + data : Vehicle*                                                │
+│ + next : VehicleNode*                                            │
+├──────────────────────────────────────────────────────────────────┤
+│ + VehicleNode(vehicle : Vehicle*)                                │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│                         LinkedList                                │
+│               (Singly Linked List Implementation)                 │
+├───────────────────────────────────────────────────────────────────┤
+│ - head : VehicleNode*                                             │
+│ - tail : VehicleNode*                                             │
+│ - size : int                                                      │
+├───────────────────────────────────────────────────────────────────┤
+│ + LinkedList()                                                    │
+│ + ~LinkedList()                                                   │
+│                                                                   │
+│ // Insertion operations                                           │
+│ + insertAtBeginning(vehicle : Vehicle*) : void                    │
+│ + insertAtEnd(vehicle : Vehicle*) : void                          │
+│ + insertAtPosition(vehicle : Vehicle*, position : int) : void     │
+│                                                                   │
+│ // Deletion operations                                            │
+│ + deleteAtBeginning() : Vehicle*                                  │
+│ + deleteAtEnd() : Vehicle*                                        │
+│ + deleteAtPosition(position : int) : Vehicle*                     │
+│ + deleteByValue(vehicle : Vehicle*) : Vehicle*                    │
+│                                                                   │
+│ // Search & Access                                                │
+│ + search(vehicle : Vehicle*) : Vehicle*                           │
+│ + getAt(position : int) : Vehicle*                                │
+│ + find(vehicle : Vehicle*) : int                                  │
+│                                                                   │
+│ // Utility methods                                                │
+│ + isEmpty() : bool                                                │
+│ + getSize() : int                                                 │
+│ + clear() : void                                                  │
+│ + display() : void                                                │
+│                                                                   │
+│ // Sorting (Bubble Sort)                                          │
+│ + sortAscending() : void                                          │
+│ + sortDescending() : void                                         │
+│                                                                   │
+│ // Getters                                                        │
+│ + getHead() : VehicleNode*                                        │
+│ + getTail() : VehicleNode*                                        │
+└───────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                           Action                                 │
+│                     (Stack Element)                              │
+├──────────────────────────────────────────────────────────────────┤
+│ - actionType : string                                            │
+│ - vehicle : Vehicle*                                             │
+│ - index : int                                                    │
+├──────────────────────────────────────────────────────────────────┤
+│ + Action(actionType : string, vehicle : Vehicle*, index : int)   │
+│ + getActionType() : string                                       │
+│ + getVehicle() : Vehicle*                                        │
+│ + getIndex() : int                                               │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                         StackNode                                │
+│                    (Stack Node Structure)                        │
+├──────────────────────────────────────────────────────────────────┤
+│ + data : Action                                                  │
+│ + next : StackNode*                                              │
+├──────────────────────────────────────────────────────────────────┤
+│ + StackNode(value : Action)                                      │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│                            Stack                                  │
+│              (Linked List Based - LIFO)                           │
+├───────────────────────────────────────────────────────────────────┤
+│ - top : StackNode*                                                │
+│ - size : int                                                      │
+├───────────────────────────────────────────────────────────────────┤
+│ + Stack()                                                         │
+│ + ~Stack()                                                        │
+│                                                                   │
+│ // Core stack operations                                          │
+│ + push(value : Action) : void                                     │
+│ + pop() : Action                                                  │
+│ + peek() : Action                                                 │
+│                                                                   │
+│ // Utility methods                                                │
+│ + isEmpty() : bool                                                │
+│ + getSize() : int                                                 │
+│ + clear() : void                                                  │
+│ + display() : void                                                │
+└───────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                      PurchaseRequest                             │
+│                    (Queue Element)                               │
+├──────────────────────────────────────────────────────────────────┤
+│ - customerName : string                                          │
+│ - vehicleIndex : int                                             │
+├──────────────────────────────────────────────────────────────────┤
+│ + PurchaseRequest(customerName : string, vehicleIndex : int)     │
+│ + getCustomerName() : string                                     │
+│ + getVehicleIndex() : int                                        │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                         QueueNode                                │
+│                    (Queue Node Structure)                        │
+├──────────────────────────────────────────────────────────────────┤
+│ + data : PurchaseRequest                                         │
+│ + next : QueueNode*                                              │
+├──────────────────────────────────────────────────────────────────┤
+│ + QueueNode(value : PurchaseRequest)                             │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│                            Queue                                  │
+│              (Linked List Based - FIFO)                           │
+├───────────────────────────────────────────────────────────────────┤
+│ - front : QueueNode*                                              │
+│ - rear : QueueNode*                                               │
+│ - size : int                                                      │
+├───────────────────────────────────────────────────────────────────┤
+│ + Queue()                                                         │
+│ + ~Queue()                                                        │
+│                                                                   │
+│ // Core queue operations                                          │
+│ + enqueue(value : PurchaseRequest) : void                         │
+│ + dequeue() : PurchaseRequest                                     │
+│ + getFront() : PurchaseRequest                                    │
+│ + getRear() : PurchaseRequest                                     │
+│                                                                   │
+│ // Utility methods                                                │
+│ + isEmpty() : bool                                                │
+│ + getSize() : int                                                 │
+│ + clear() : void                                                  │
+│ + display() : void                                                │
+└───────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│                           Action                                 │
+│                     (Stack Element)                              │
+├──────────────────────────────────────────────────────────────────┤
+│ - actionType : string                                            │
+│ - vehicle : Vehicle*                                             │
+│ - index : int                                                    │
+├──────────────────────────────────────────────────────────────────┤
+│ + Action(actionType : string, vehicle : Vehicle*, index : int)   │
+│ + getActionType() : string                                       │
+│ + getVehicle() : Vehicle*                                        │
+│ + getIndex() : int                                               │
+└──────────────────────────────────────────────────────────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│                         GarageOwner                               │
+├───────────────────────────────────────────────────────────────────┤
+│ - head : VehicleNode*                   ← RAW LINKED LIST        │
+│ - actionHistory : Stack                 ← CUSTOM STACK for UNDO  │
+│                                                                   │
+│ + {static} totalPollution : double                                │
+│ + {static} maxPollution : double                                  │
+├───────────────────────────────────────────────────────────────────┤
+│ + GarageOwner()                                                   │
+│ + ~GarageOwner()                                                  │
+│                                                                   │
+│ + addVehicle(v : Vehicle*) : void                                 │
+│ + removeVehicle(index : int) : void                               │
+│ + showGarage() : void                                             │
+│ + sellVehicle(index : int) : Vehicle*                             │
+│ + findByBudget(budget : double) : void                            │
+│ + sortByPriceAscending() : void                                   │
+│ + sortByPriceDescending() : void                                  │
+│ + viewPollutionStatus() : void                                    │
+│ + processPurchaseRequestQueue(queue : Queue&,                     │
+│                                customer : Customer&) : void       │
+│ + undoLastAction() : void                                         │
+│ + getVehicleCount() : int                                         │
+│ + getVehicleAtIndex(index : int) : Vehicle*                       │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              │ uses
+                              ▼
+                      ┌──────────────┐
+                      │  VehicleNode │
+                      └──────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│                           Customer                                │
+├───────────────────────────────────────────────────────────────────┤
+│ - name : string                                                   │
+│ - boughtVehicles : vector<Vehicle*>     ← VECTOR                  │
+├───────────────────────────────────────────────────────────────────┤
+│ + Customer(name : string)                                         │
+│ + ~Customer()                                                     │
+│                                                                   │
+│ + getName() : string                                              │
+│ + buyVehicle(v : Vehicle*) : void                                 │
+│ + showBoughtVehicles() : void                                     │
+│ + compareBoughtVehicles(index1 : int, index2 : int) : void        │
+│ + getBoughtCount() : int                                          │
+└───────────────────────────────────────────────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════
+                          RELATIONSHIPS
+════════════════════════════════════════════════════════════════════
+
+1. INHERITANCE (Generalization):
+   Vehicle (abstract) ◁────── Car
+                      ◁────── Motorcycle
+                      ◁────── Truck
+
+2. COMPOSITION:
+   GarageOwner ◆────── VehicleNode (head pointer)
+               ◆────── stack<Action> (actionHistory)
+
+   Customer    ◆────── vector<Vehicle*> (boughtVehicles)
+
+3. ASSOCIATION:
+   GarageOwner ──────> Vehicle* (through VehicleNode)
+   Customer    ──────> Vehicle* (through vector)
+   VehicleNode ──────> Vehicle* (data)
+   Action      ──────> Vehicle* (vehicle)
+
+4. DEPENDENCY:
+   GarageOwner ┄┄┄> queue<PurchaseRequest> (method parameter)
+   GarageOwner ┄┄┄> Customer (method parameter)
+
+5. AGGREGATION:
+   VehicleNode ◇────── VehicleNode* (next - self-reference)
+
+
+════════════════════════════════════════════════════════════════════
+                      DATA STRUCTURES USED
+════════════════════════════════════════════════════════════════════
+
+📋 LINKED LIST (Custom Implementation):
+   TWO WAYS USED:
+
+   1. Raw Linked List in GarageOwner:
+      - GarageOwner.head → VehicleNode → VehicleNode → ... → null
+      - Direct manipulation of nodes
+      - Used for garage inventory
+
+   2. LinkedList Class (Full Implementation):
+      - Complete class with 15 methods
+      - insertAtBeginning, insertAtEnd, insertAtPosition
+      - deleteAtBeginning, deleteAtEnd, deleteAtPosition
+      - search, getAt, find
+      - sortAscending, sortDescending (Bubble Sort)
+      - Available for future use
+
+📚 STACK (Custom Linked List Based):
+   - Stack class with StackNode linked list
+   - Stack in GarageOwner.actionHistory
+   - LIFO: Last-In-First-Out
+   - Methods: push(), pop(), peek(), isEmpty(), getSize()
+   - Undo recent operations (ADD/REMOVE/SELL)
+   - NO STL used!
+
+📥 QUEUE (Custom Linked List Based):
+   - Queue class with QueueNode linked list
+   - Queue in main.cpp for purchase requests
+   - FIFO: First-In-First-Out
+   - Methods: enqueue(), dequeue(), getFront(), getRear()
+   - Customer purchase requests processed in order
+   - NO STL used!
+
+📦 VECTOR (STL - Only this one uses STL):
+   - vector<Vehicle*> in Customer.boughtVehicles
+   - Dynamic array with random access
+   - Stores purchased vehicles
+   - This is the ONLY STL container used
+
+
+════════════════════════════════════════════════════════════════════
+                    KEY DESIGN PATTERNS
+════════════════════════════════════════════════════════════════════
+
+1. ABSTRACT FACTORY PATTERN:
+   - Vehicle is abstract base class
+   - Car, Motorcycle, Truck are concrete implementations
+
+2. POLYMORPHISM:
+   - Vehicle* can point to Car/Motorcycle/Truck objects
+   - displayInfo(), fuelConsumption(), getPollution() are virtual
+
+3. COMMAND PATTERN (Simplified):
+   - Action class stores operation info for undo
+   - Stack stores command history
+
+4. SINGLETON-LIKE STATIC MEMBERS:
+   - totalPollution and maxPollution are static
+   - pollution values in each vehicle type are static
+
+
+════════════════════════════════════════════════════════════════════
+                    MULTIPLICITY NOTATION
+════════════════════════════════════════════════════════════════════
+
+GarageOwner "1" ──────── "0..*" VehicleNode : manages
+VehicleNode "1" ──────── "1" Vehicle : contains
+VehicleNode "1" ──────── "0..1" VehicleNode : points to next
+
+Customer "1" ──────── "0..*" Vehicle : owns purchased vehicles
+
+GarageOwner "1" ──────── "0..*" Action : maintains history
+
+
+
