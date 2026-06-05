@@ -11,14 +11,12 @@ class Action {
 private:
     string actionType;
     Vehicle* vehicle;
-    int index;
 
 public:
-    Action(string actionType = "", Vehicle* vehicle = nullptr, int index = -1);
+    Action(string actionType = "", Vehicle* vehicle = nullptr);
 
     string getActionType() const;
     Vehicle* getVehicle() const;
-    int getIndex() const;
 };
 
 // Node structure for Stack (Linked List based)
@@ -44,7 +42,7 @@ public:
     // Core stack operations
     void push(Action value);
     Action pop();
-    Action peek() const;
+    Action myTop() const;
 
     // Utility methods
     bool isEmpty() const;

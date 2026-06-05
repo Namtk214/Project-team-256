@@ -26,9 +26,6 @@ void Customer::buyVehicle(Vehicle* v) {
     }
 
     boughtVehicles.push_back(v);
-    cout << "Purchase successful! " << name << " bought "
-         << v->getBrand() << " " << v->getModel()
-         << " for $" << v->getPrice() << endl;
 }
 
 // Show bought vehicles

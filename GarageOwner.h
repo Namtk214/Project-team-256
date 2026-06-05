@@ -7,7 +7,6 @@
 #include "Customer.h"
 using namespace std;
 
-class Customer; // Forward declaration
 
 class GarageOwner {
 private:

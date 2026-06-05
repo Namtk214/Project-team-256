@@ -2,10 +2,9 @@
 
 // ============= ACTION CLASS IMPLEMENTATION =============
 
-Action::Action(string actionType, Vehicle* vehicle, int index) {
+Action::Action(string actionType, Vehicle* vehicle) {
     this->actionType = actionType;
     this->vehicle = vehicle;
-    this->index = index;
 }
 
 string Action::getActionType() const {
@@ -14,10 +13,6 @@ string Action::getActionType() const {
 
 Vehicle* Action::getVehicle() const {
     return vehicle;
-}
-
-int Action::getIndex() const {
-    return index;
 }
 
 // ============= STACKNODE IMPLEMENTATION =============
@@ -64,8 +59,8 @@ Action Stack::pop() {
     return value;
 }
 
-// Peek at top element without removing
-Action Stack::peek() const {
+// Get top element without removing
+Action Stack::myTop() const {
     if (isEmpty()) {
         cout << "Stack is empty!" << endl;
         return Action();  // Return default Action
@@ -102,17 +97,17 @@ void Stack::display() const {
     cout << "Top to Bottom:" << endl;
 
     StackNode* current = top;
-    int index = 1;
+    int position = 1;
 
     while (current != nullptr) {
-        cout << "[" << index << "] Action Type: " << current->data.getActionType();
+        cout << "[" << position << "] Action Type: " << current->data.getActionType();
         if (current->data.getVehicle() != nullptr) {
             cout << " | Vehicle: " << current->data.getVehicle()->getBrand()
                  << " " << current->data.getVehicle()->getModel();
         }
         cout << endl;
         current = current->next;
-        index++;
+        position++;
     }
     cout << "Total actions in stack: " << size << endl;
     cout << "===========================================" << endl;

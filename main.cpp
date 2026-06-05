@@ -190,6 +190,9 @@ void customerMenu(GarageOwner& garage, Queue& purchaseQueue, Customer& customer)
                     Vehicle* v = garage.sellVehicle(index);
                     if (v != nullptr) {
                         customer.buyVehicle(v);
+                        cout << "Purchase successful! " << customer.getName() << " bought "
+                             << v->getBrand() << " " << v->getModel()
+                             << " for $" << v->getPrice() << endl;
                     }
                 }
                 break;

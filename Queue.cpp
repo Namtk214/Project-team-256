@@ -118,13 +118,13 @@ void Queue::display() const {
     cout << "Front to Rear:" << endl;
 
     QueueNode* current = front;
-    int index = 1;
+    int position = 1;
 
     while (current != nullptr) {
-        cout << "[" << index << "] Customer: " << current->data.getCustomerName()
+        cout << "[" << position << "] Customer: " << current->data.getCustomerName()
              << " | Vehicle Index: " << current->data.getVehicleIndex() << endl;
         current = current->next;
-        index++;
+        position++;
     }
     cout << "Total requests in queue: " << size << endl;
     cout << "===========================================" << endl;

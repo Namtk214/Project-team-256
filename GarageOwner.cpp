@@ -52,7 +52,7 @@ void GarageOwner::addVehicle(Vehicle* v) {
     }
 
     totalPollution = newTotalPollution;
-    actionHistory.push(Action("ADD", v, -1));
+    actionHistory.push(Action("ADD", v));
     cout << "Vehicle added successfully!" << endl;
 }
 
@@ -92,7 +92,7 @@ void GarageOwner::removeVehicle(int index) {
     }
 
     totalPollution -= current->data->getPollution();
-    actionHistory.push(Action("REMOVE", current->data, index));
+    actionHistory.push(Action("REMOVE", current->data));
 
     // Note: We keep the vehicle pointer for undo, don't delete it immediately
     delete current; // Only delete the node
@@ -156,7 +156,7 @@ Vehicle* GarageOwner::sellVehicle(int index) {
 
     Vehicle* soldVehicle = current->data;
     totalPollution -= soldVehicle->getPollution();
-    actionHistory.push(Action("SELL", soldVehicle, index));
+    actionHistory.push(Action("SELL", soldVehicle));
 
     delete current; // Delete only the node, not the vehicle
     return soldVehicle;
